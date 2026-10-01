@@ -303,8 +303,27 @@ html {
 }
 
 /* Give language, theme, account and project actions separate breathing room. */
-.header-actions { gap: 14px; }
-.header-actions .signin-link { margin-inline: 5px 8px; }
+.header-actions {
+  gap: 14px;
+}
+.header-actions .signin-link {
+  margin-inline: 5px 8px;
+}
 @media (max-width: 650px) {
-  .header-actions { gap: 8px; }
+  .header-actions {
+    gap: 8px;
+  }
+}
+
+/* Let sign-in own the full first screen; the footer starts after it. */
+.auth-section {
+  min-height: 100svh;
+}
+.auth-panel {
+  padding-block: clamp(44px, 8svh, 90px);
+}
+@media (max-width: 850px) {
+  .auth-panel {
+    padding-block: clamp(44px, 8svh, 90px);
+  }
 }
