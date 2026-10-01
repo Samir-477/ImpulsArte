@@ -7,6 +7,7 @@ import { content, getLocale, serviceKeys, servicePath } from "@/lib/content";
 import { getPublicServices } from "@/lib/public-services";
 import { AnimatedScene, CatalogEntrance } from "@/components/motion-experience";
 import { BusinessServices } from "@/components/business-services";
+import { ServiceShowcase } from "@/components/service-showcase";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
@@ -99,6 +100,7 @@ export default async function ServicesPage({
             ))}
         </div>
       </section>
+      <ServiceShowcase locale={locale} />
       <BusinessServices locale={locale} catalog />
       <section className="simple-cta">
         <div className="container simple-cta-inner">

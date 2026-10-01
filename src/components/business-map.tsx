@@ -36,16 +36,17 @@ const nodes = [
 export function BusinessMap({ locale }: { locale: Locale }) {
   const t = agencyOfferings[locale];
   const [selected, setSelected] = useState(0);
+  const [interacted, setInteracted] = useState(false);
   const calm = useMotionPreference();
   const { ref, running } = useSceneMotion();
   useEffect(() => {
-    if (!running) return;
+    if (!running || interacted) return;
     const timer = window.setInterval(
       () => setSelected((value) => (value + 1) % 3),
       4500,
     );
     return () => window.clearInterval(timer);
-  }, [running]);
+  }, [running, interacted]);
   const options = [
     { name: t.business.title, caption: t.direction, Icon: BriefcaseBusiness },
     { name: t.consultancy.title, caption: t.connected, Icon: Compass },
@@ -225,7 +226,10 @@ export function BusinessMap({ locale }: { locale: Locale }) {
             key={name}
             type="button"
             aria-pressed={selected === i}
-            onClick={() => setSelected(i)}
+            onClick={() => {
+              setInteracted(true);
+              setSelected(i);
+            }}
           >
             <Icon size={18} />
             {name}

@@ -27,6 +27,22 @@
   top: 25px;
   border-top: 1px solid var(--line);
 }
+.journey-progress {
+  position: absolute;
+  top: 58px;
+  bottom: 0;
+  left: -19px;
+  width: 2px;
+  background: var(--line);
+}
+.journey-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--blue);
+  transform-origin: top;
+  transform: scaleY(0);
+}
 .journey-desk-top {
   display: flex;
   justify-content: space-between;
@@ -1182,5 +1198,212 @@
   .studio-principle,
   .studio-principle + .studio-principle {
     padding-inline: 20px;
+  }
+}
+
+/* The catalog's interactive visual is optional; the poster covers its loading state. */
+.service-showcase {
+  padding: clamp(76px, 10vw, 150px) 0;
+  background: color-mix(in srgb, var(--pale) 67%, var(--paper));
+  border-block: 1px solid var(--line);
+}
+.service-showcase-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(44px, 7vw, 110px);
+  align-items: center;
+}
+.service-showcase-copy h2 {
+  max-width: 12ch;
+  margin-bottom: 20px;
+}
+.service-showcase-intro {
+  color: var(--muted);
+  max-width: 47ch;
+  font-size: 1.04rem;
+  line-height: 1.75;
+}
+.service-showcase-prompt {
+  margin: 38px 0 10px;
+  color: var(--blue);
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+}
+.service-showcase-options {
+  border-top: 1px solid var(--line);
+}
+.service-showcase-options button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  text-align: left;
+  gap: 14px;
+  padding: 17px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  transition:
+    background-color 180ms ease,
+    padding-left 180ms ease;
+}
+.service-showcase-options button[aria-pressed="true"] {
+  background: var(--surface);
+  padding-left: 19px;
+  box-shadow: inset 3px 0 var(--blue);
+}
+.service-showcase-option-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--blue);
+}
+.service-showcase-options strong,
+.service-showcase-options small {
+  display: block;
+}
+.service-showcase-options strong {
+  font-size: 0.93rem;
+}
+.service-showcase-options small {
+  margin-top: 3px;
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.service-showcase-option-number {
+  color: var(--blue);
+  font-size: 0.7rem;
+}
+.service-showcase-visual {
+  min-width: 0;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+.service-showcase-visual-top,
+.service-showcase-visual-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.service-showcase-visual-bottom {
+  align-items: center;
+}
+.service-showcase-visual-bottom span:last-child {
+  color: var(--blue);
+  font-size: 2rem;
+  line-height: 1;
+}
+.service-showcase-art {
+  position: relative;
+  height: clamp(350px, 43vw, 520px);
+  margin: 16px 0;
+  overflow: hidden;
+  border-radius: 13px;
+  background: radial-gradient(
+    circle at 50% 40%,
+    #f8faff 0%,
+    #dce7ff 72%,
+    #c5d6fa 100%
+  );
+}
+.service-showcase-canvas,
+.service-showcase-poster {
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.service-showcase-poster {
+  display: grid;
+  place-items: center;
+  transition: opacity 200ms ease;
+}
+.service-showcase-art[data-webgl-ready="true"] .service-showcase-poster {
+  opacity: 0;
+}
+.showcase-poster-orbit {
+  width: 70%;
+  height: 70%;
+  border: 1px dashed #8ca8df;
+  border-radius: 50%;
+  transform: rotate(-20deg);
+}
+.showcase-poster-sheet {
+  position: absolute;
+  width: 65%;
+  height: 66%;
+  border: 1px solid #bdcbe1;
+  border-radius: 5px;
+  box-shadow: 0 20px 38px #2034541b;
+}
+.showcase-poster-sheet.sheet-back {
+  background: #f4f0e6;
+  transform: rotate(8deg) translate(13px, 4px);
+}
+.showcase-poster-sheet.sheet-front {
+  background: #fff;
+  display: grid;
+  place-items: center;
+  transform: rotate(-3deg);
+  color: #3659dc;
+}
+.showcase-poster-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3659dc;
+}
+.showcase-poster-dot.dot-one {
+  top: 18%;
+  left: 16%;
+}
+.showcase-poster-dot.dot-two {
+  bottom: 19%;
+  right: 14%;
+  background: #b8dfc7;
+}
+@media (hover: hover) and (pointer: fine) {
+  .service-showcase-options button:hover {
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+}
+@media (max-width: 900px) {
+  .service-showcase-grid {
+    grid-template-columns: 1fr;
+  }
+  .service-showcase-copy h2 {
+    max-width: 17ch;
+  }
+}
+@media (max-width: 650px) {
+  .service-showcase {
+    padding-block: 70px;
+  }
+  .service-showcase-visual {
+    padding: 14px;
+  }
+  .service-showcase-art {
+    height: 340px;
+  }
+  .journey-progress {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-showcase-options button,
+  .service-showcase-poster {
+    transition-duration: 0ms;
   }
 }

@@ -13,14 +13,15 @@ export function ClassicHeroVisual({ locale }: { locale: Locale }) {
   const { ref, running, reduced } = useSceneMotion();
   const [stage, setStage] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [chosenByVisitor, setChosenByVisitor] = useState(false);
   useEffect(() => {
-    if (!running || hovered) return;
+    if (!running || hovered || chosenByVisitor) return;
     const timer = window.setInterval(
       () => setStage((value) => (value + 1) % 3),
       3600,
     );
     return () => window.clearInterval(timer);
-  }, [running, hovered]);
+  }, [running, hovered, chosenByVisitor]);
   const stages =
     locale === "es"
       ? [
@@ -44,7 +45,7 @@ export function ClassicHeroVisual({ locale }: { locale: Locale }) {
       <div
         ref={ref}
         className="hero-visual animated-scene scene-hero"
-        data-running={running && !hovered}
+        data-running={running && !hovered && !chosenByVisitor}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onFocusCapture={() => setHovered(true)}
@@ -175,7 +176,10 @@ export function ClassicHeroVisual({ locale }: { locale: Locale }) {
                     type="button"
                     key={name}
                     aria-pressed={active === i}
-                    onClick={() => setStage(i)}
+                    onClick={() => {
+                      setChosenByVisitor(true);
+                      setStage(i);
+                    }}
                     disabled={reduced}
                   >
                     <Icon size={13} />

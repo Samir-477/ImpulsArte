@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Check,
   ArrowUpRight,
@@ -14,6 +16,8 @@ import { useMotionPreference } from "@/components/motion-experience";
 import { processStory } from "@/lib/process-story";
 import type { Locale } from "@/lib/content";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export function DetailedProcessStory({ locale }: { locale: Locale }) {
   const t = processStory[locale];
   const ref = useRef<HTMLDivElement>(null);
@@ -21,42 +25,39 @@ export function DetailedProcessStory({ locale }: { locale: Locale }) {
   const [active, setActive] = useState(0);
   useEffect(() => {
     if (calm || !ref.current) return;
-    const chapters = Array.from(
-      ref.current.querySelectorAll<HTMLElement>(".journey-chapter"),
+    const root = ref.current;
+    const chapters = gsap.utils.toArray<HTMLElement>(
+      root.querySelectorAll(".journey-chapter"),
     );
-    const visible = new Set<HTMLElement>();
-    let observer: IntersectionObserver;
-    const observeReadingBand = () => {
-      observer?.disconnect();
-      visible.clear();
-      const height = window.innerHeight;
-      observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            const chapter = entry.target as HTMLElement;
-            if (entry.isIntersecting) visible.add(chapter);
-            else visible.delete(chapter);
-          }
-          const readingLine = window.innerHeight * 0.255;
-          const current = Array.from(visible).find((chapter) => {
-            const bounds = chapter.getBoundingClientRect();
-            return bounds.top <= readingLine && bounds.bottom > readingLine;
-          });
-          if (current) setActive(Number(current.dataset.chapter));
-        },
+    const context = gsap.context(() => {
+      chapters.forEach((chapter, index) => {
+        ScrollTrigger.create({
+          trigger: chapter,
+          start: "top 52%",
+          end: "bottom 52%",
+          onEnter: () => setActive(index),
+          onEnterBack: () => setActive(index),
+          onToggle: (self) => {
+            if (self.isActive) setActive(index);
+          },
+        });
+      });
+      gsap.fromTo(
+        ".journey-progress-fill",
+        { scaleY: 0 },
         {
-          rootMargin: `-${Math.round(height * 0.25)}px 0px -${Math.round(height * 0.74)}px 0px`,
-          threshold: 0,
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".journey-chapters",
+            start: "top 52%",
+            end: "bottom 52%",
+            scrub: 0.35,
+          },
         },
       );
-      chapters.forEach((chapter) => observer.observe(chapter));
-    };
-    observeReadingBand();
-    window.addEventListener("resize", observeReadingBand);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", observeReadingBand);
-    };
+    }, root);
+    return () => context.revert();
   }, [calm, locale]);
   const icons = [Lightbulb, Route, Code2, MessageSquare, PackageCheck];
   const Icon = icons[active];
@@ -68,6 +69,9 @@ export function DetailedProcessStory({ locale }: { locale: Locale }) {
       </div>
       <div className="detailed-journey" ref={ref}>
         <aside className="journey-desk">
+          <span className="journey-progress" aria-hidden="true">
+            <span className="journey-progress-fill" />
+          </span>
           <div className="journey-desk-top">
             <span>ImpulsArte</span>
             <span>{t.desk}</span>
