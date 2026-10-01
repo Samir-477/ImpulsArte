@@ -5,7 +5,15 @@ import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/browser";
 import type { Locale } from "@/lib/content";
 
-export function SignInForm({ locale, next }: { locale: Locale; next: string }) {
+export function SignInForm({
+  locale,
+  next,
+  googleEnabled,
+}: {
+  locale: Locale;
+  next: string;
+  googleEnabled: boolean;
+}) {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [stage, setStage] = useState<"email" | "code">("email");
@@ -84,20 +92,24 @@ export function SignInForm({ locale, next }: { locale: Locale; next: string }) {
       {!supabase && <p className="form-notice">{t.setup}</p>}
       {stage === "email" ? (
         <>
-          <button
-            type="button"
-            className="google-button"
-            onClick={google}
-            disabled={!supabase || busy}
-          >
-            <span className="google-g">G</span>
-            {t.google}
-          </button>
-          <div className="form-divider">
-            <span />
-            {locale === "es" ? "o" : "or"}
-            <span />
-          </div>
+          {googleEnabled && (
+            <button
+              type="button"
+              className="google-button"
+              onClick={google}
+              disabled={!supabase || busy}
+            >
+              <span className="google-g">G</span>
+              {t.google}
+            </button>
+          )}
+          {googleEnabled && (
+            <div className="form-divider">
+              <span />
+              {locale === "es" ? "o" : "or"}
+              <span />
+            </div>
+          )}
           <form onSubmit={sendCode}>
             <label htmlFor="email">{t.email}</label>
             <input

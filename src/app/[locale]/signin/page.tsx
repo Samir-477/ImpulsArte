@@ -30,7 +30,11 @@ export default async function Page({
             ? "Ingresá para compartir un proyecto o seguir su progreso."
             : "Sign in to share a project or follow its progress."}
         </p>
-        <SignInForm locale={locale} next={next} />
+        <SignInForm
+          locale={locale}
+          next={next}
+          googleEnabled={process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true"}
+        />
       </div>
       <div className="auth-aside">
         <div className="auth-aside-content">

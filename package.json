@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:check": "node scripts/check-supabase.mjs --database",
+    "db:migrate:check": "node scripts/apply-schema.mjs",
+    "db:migrate:apply": "node scripts/apply-schema.mjs --apply",
+    "db:seed": "node scripts/seed-services.mjs"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",
